@@ -15,7 +15,7 @@ logging.basicConfig(
 from telegram import Update, ReplyKeyboardMarkup, KeyboardButton
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 
-# Замените '7619639027:AAFaw97l38wBEwejyg04N_VURbgSOectv6Q' на токен вашего бота, полученный от @BotFather
+# Замените на токен вашего бота, полученный от @BotFather
 TOKEN = '7619639027:AAFaw97l38wBEwejyg04N_VURbgSOectv6Q'
 
 # Основное меню
@@ -23,6 +23,12 @@ MAIN_MENU = [
     ['📅 Записаться на массаж', '💰 Цены'],
     ['ℹ️ Обо мне', '📞 Контакты'],
     ['❓ Частые вопросы', '📍 Адрес']
+]
+
+# Меню записи
+BOOKING_MENU = [
+    ['📱 Записаться через Telegram', '💬 Записаться через WhatsApp'],
+    ['🔙 Вернуться в главное меню']
 ]
 
 # Ответы на частые вопросы
@@ -103,8 +109,20 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text
 
     if text == "📅 Записаться на массаж":
+        booking_keyboard = ReplyKeyboardMarkup(BOOKING_MENU, resize_keyboard=True)
         await update.message.reply_text(
-                        "t.me/andrew_ko"
+            "Выберите удобный способ для записи:",
+            reply_markup=booking_keyboard
+        )
+    elif text == "📱 Записаться через Telegram":
+        await update.message.reply_text(
+            "Нажмите чтобы перейти в Telegram ➡️ @andrew_ko",
+            disable_web_page_preview=True
+        )
+    elif text == "💬 Записаться через WhatsApp":
+        await update.message.reply_text(
+            "Нажмите чтобы перейти в WhatsApp ➡️ https://wa.me/message/6N5VGYJLMWF7O1",
+            disable_web_page_preview=True
         )
     elif text == "💰 Цены":
         await update.message.reply_text(PRICES)
