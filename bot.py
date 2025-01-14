@@ -19,6 +19,9 @@ from telegram.ext import Application, CommandHandler, MessageHandler, filters, C
 # Замените на токен вашего бота, полученный от @BotFather
 TOKEN = '7619639027:AAFaw97l38wBEwejyg04N_VURbgSOectv6Q'
 
+# Ваш username в Telegram
+ADMIN_USERNAME = "andrew_ko"
+
 # Основное меню
 MAIN_MENU = [
     ['📅 Записаться на массаж', '💰 Цены'],
@@ -96,8 +99,28 @@ https://maps.app.goo.gl/NeVmvLd7S35J6AfJA
 Принимаю с 8:00 до 12:00
 """
 
+async def notify_admin_new_user(context: ContextTypes.DEFAULT_TYPE, user_info: str):
+    """Отправка уведомления администратору о новом пользователе"""
+    try:
+        await context.bot.send_message(
+            chat_id=f"@{ADMIN_USERNAME}",
+            text=f"🆕 {user_info}"
+        )
+    except Exception as e:
+        logging.error(f"Не удалось отправить уведомление администратору: {e}")
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Обработчик команды /start"""
+    # Получаем информацию о пользователе
+    user = update.effective_user
+    user_info = f"Новый пользователь!\nUsername: @{user.username}\nИмя: {user.first_name}"
+    if user.last_name:
+        user_info += f" {user.last_name}"
+    
+    # Отправляем уведомление администратору
+    await notify_admin_new_user(context, user_info)
+
+    # Отправляем приветственное сообщение пользователю
     keyboard = ReplyKeyboardMarkup(MAIN_MENU, resize_keyboard=True)
     await update.message.reply_text(
         "👋 Добро пожаловать!\n"
