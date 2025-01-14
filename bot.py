@@ -4,6 +4,7 @@ from telegram.error import Conflict, TelegramError
 
 import sys
 import logging
+import os
 from telegram.error import Conflict, TelegramError
 
 # Настройка логирования
@@ -95,6 +96,15 @@ https://maps.app.goo.gl/NeVmvLd7S35J6AfJA
 Принимаю с 8:00 до 12:00
 """
 
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Обработчик команды /start"""
+    keyboard = ReplyKeyboardMarkup(MAIN_MENU, resize_keyboard=True)
+    await update.message.reply_text(
+        "👋 Добро пожаловать!\n"
+        "Выберите интересующий вас раздел:",
+        reply_markup=keyboard
+    )
+
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Обработчик текстовых сообщений"""
     text = update.message.text
@@ -130,9 +140,6 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     photo=photo,
                     caption=ADDRESS
                 )
-        except Exception as e:
-            logging.error(f"Ошибка при отправке фото: {e}")
-            await update.message.reply_text(ADDRESS)
         except Exception as e:
             logging.error(f"Ошибка при отправке фото: {e}")
             await update.message.reply_text(ADDRESS)
