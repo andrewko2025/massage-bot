@@ -95,15 +95,6 @@ https://maps.app.goo.gl/NeVmvLd7S35J6AfJA
 Принимаю с 8:00 до 12:00
 """
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Обработчик команды /start"""
-    keyboard = ReplyKeyboardMarkup(MAIN_MENU, resize_keyboard=True)
-    await update.message.reply_text(
-        "👋 Добро пожаловать!\n"
-        "Выберите интересующий вас раздел:",
-        reply_markup=keyboard
-    )
-
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Обработчик текстовых сообщений"""
     text = update.message.text
@@ -130,9 +121,8 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(ABOUT_US)
     elif text == "📞 Контакты":
         await update.message.reply_text(CONTACTS)
-   elif text == "📍 Адрес":
+    elif text == "📍 Адрес":
         try:
-            # Используем правильное имя файла
             photo_path = 'photo_2025-01-14_22-11-34.jpg'
             with open(photo_path, 'rb') as photo:
                 await context.bot.send_photo(
@@ -140,6 +130,9 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     photo=photo,
                     caption=ADDRESS
                 )
+        except Exception as e:
+            logging.error(f"Ошибка при отправке фото: {e}")
+            await update.message.reply_text(ADDRESS)
         except Exception as e:
             logging.error(f"Ошибка при отправке фото: {e}")
             await update.message.reply_text(ADDRESS)
