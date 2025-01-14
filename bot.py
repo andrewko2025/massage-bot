@@ -1,3 +1,37 @@
+# В начало bot.py добавьте:
+import sys
+import logging
+from telegram.error import Conflict, TelegramError
+
+# Настройка логирования
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level=logging.INFO
+)
+
+# В функции main() измените код на:
+def main():
+    try:
+        application = Application.builder().token(TOKEN).build()
+        application.add_handler(CommandHandler("start", start))
+        application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
+        
+        # Добавляем обработчик ошибок
+        application.add_error_handler(error_handler)
+        
+        print("Бот запущен...")
+        application.run_polling(drop_pending_updates=True)
+    except Conflict:
+        print("Ошибка: Бот уже запущен в другом месте")
+        sys.exit(1)
+    except Exception as e:
+        print(f"Критическая ошибка: {e}")
+        sys.exit(1)
+
+# Добавьте функцию обработки ошибок:
+async def error_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    logging.error(f"Exception while handling an update: {context.error}")
+
 from telegram import Update, ReplyKeyboardMarkup, KeyboardButton
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 
