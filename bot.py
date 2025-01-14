@@ -131,7 +131,18 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif text == "📞 Контакты":
         await update.message.reply_text(CONTACTS)
     elif text == "📍 Адрес":
-        await update.message.reply_text(ADDRESS)
+        try:
+            # Пробуем отправить фото с подписью
+            with open('map.jpg', 'rb') as photo:
+                await context.bot.send_photo(
+                    chat_id=update.effective_chat.id,
+                    photo=photo,
+                    caption=ADDRESS
+                )
+        except Exception as e:
+            # Если с фото возникла проблема, отправляем только текст
+            logging.error(f"Ошибка при отправке фото: {e}")
+            await update.message.reply_text(ADDRESS)
     elif text == "❓ Частые вопросы":
         faq_keyboard = [[KeyboardButton(question)] for question in FAQ.keys()]
         faq_keyboard.append(["🔙 Вернуться в главное меню"])
