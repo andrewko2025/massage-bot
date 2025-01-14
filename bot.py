@@ -86,11 +86,11 @@ VK: vk.com/medic_mass
 ADDRESS = """
 📍 Мой адрес:
 
-Phuket, Thailand
-Chalong, 50Pi road
-Soi 2/5 
+Дом 93/49 УГЛОВОЙ, въезжаем в посёлок, третий поворот налево
 
-Ориентир: Lotus Tesco
+https://maps.app.goo.gl/NeVmvLd7S35J6AfJA
+
+Ориентир: Район Old Town рядом Central Festival Phuket
 
 Принимаю с 8:00 до 12:00
 """
@@ -116,7 +116,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
     elif text == "📱 Записаться через Telegram":
         await update.message.reply_text(
-            "Нажмите чтобы перейти в Telegram ➡️ @andrew_ko",
+            "Нажмите чтобы перейти в Telegram ➡️ t.me/andrew_ko",
             disable_web_page_preview=True
         )
     elif text == "💬 Записаться через WhatsApp":
