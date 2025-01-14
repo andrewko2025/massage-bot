@@ -1,5 +1,4 @@
 name: Run Telegram Bot
-
 on:
   workflow_dispatch:
   push:
@@ -7,13 +6,10 @@ on:
     paths:
       - 'bot.py'
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
   run-bot:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     
     steps:
     - uses: actions/checkout@v2
@@ -31,4 +27,5 @@ jobs:
     - name: Run bot
       env:
         BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-      run: python bot.py
+      run: |
+        python bot.py
