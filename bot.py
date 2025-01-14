@@ -1,4 +1,8 @@
-# В начало bot.py добавьте:
+
+from telegram import Update
+from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
+from telegram.error import Conflict, TelegramError
+
 import sys
 import logging
 from telegram.error import Conflict, TelegramError
