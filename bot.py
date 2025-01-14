@@ -130,17 +130,17 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(ABOUT_US)
     elif text == "📞 Контакты":
         await update.message.reply_text(CONTACTS)
-    elif text == "📍 Адрес":
+   elif text == "📍 Адрес":
         try:
-            # Пробуем отправить фото с подписью
-            with open('map.jpg', 'rb') as photo:
+            # Используем правильное имя файла
+            photo_path = 'photo_2025-01-14_22-11-34.jpg'
+            with open(photo_path, 'rb') as photo:
                 await context.bot.send_photo(
                     chat_id=update.effective_chat.id,
                     photo=photo,
                     caption=ADDRESS
                 )
         except Exception as e:
-            # Если с фото возникла проблема, отправляем только текст
             logging.error(f"Ошибка при отправке фото: {e}")
             await update.message.reply_text(ADDRESS)
     elif text == "❓ Частые вопросы":
